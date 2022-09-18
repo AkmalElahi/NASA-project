@@ -14,7 +14,7 @@ describe("Test launches API", () => {
   describe("Test GET /launches", () => {
     test("it should return 200 on success", async () => {
       await request(app)
-        .get("/launches")
+        .get("/v1/launches")
         .expect("Content-Type", /json/)
         .expect(200);
     });
@@ -43,7 +43,7 @@ describe("Test launches API", () => {
 
     test("it should return 201 with created", async () => {
       const response = await request(app)
-        .post("/launches")
+        .post("/v1/launches")
         .send(launchData)
         .expect("Content-Type", /json/)
         .expect(201);
@@ -56,7 +56,7 @@ describe("Test launches API", () => {
     });
     test("it should catch missing required properties", async () => {
       const response = await request(app)
-        .post("/launches")
+        .post("/v1/launches")
         .send(launchDataWithoutDate)
         .expect("Content-Type", /json/)
         .expect(400);
@@ -67,7 +67,7 @@ describe("Test launches API", () => {
     });
     test("it should catch invalid date field", async () => {
       const response = await request(app)
-        .post("/launches")
+        .post("/v1/launches")
         .send(launchDataWihInvalidDate)
         .expect("Content-Type", /json/)
         .expect(400);
@@ -80,11 +80,11 @@ describe("Test launches API", () => {
 
   describe("Test DELETE /laounches", () => {
     test("it should return 200 on delete", async () => {
-      const response = await request(app).delete("/launches/112").expect(200);
+      const response = await request(app).delete("/v1/launches/112").expect(200);
     });
 
     test("it should catch no launch found", async () => {
-      const response = await request(app).delete("/launches/101").expect(400);
+      const response = await request(app).delete("/v1/launches/101").expect(400);
       expect(response.body).toStrictEqual({ error: "Launch not aboreted" });
     });
   });
