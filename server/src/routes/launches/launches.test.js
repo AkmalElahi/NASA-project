@@ -1,10 +1,12 @@
 const request = require("supertest");
 const app = require("../../app");
 const { connectMongo, disconnectMongo } = require("../../services/mongo");
+const { loadPlanetsData } = require("../../models/planets.model");
 
 describe("Test launches API", () => {
   beforeAll(async () => {
     await connectMongo();
+    await loadPlanetsData();
   });
 
   afterAll(async () => {
@@ -80,11 +82,15 @@ describe("Test launches API", () => {
 
   describe("Test DELETE /laounches", () => {
     test("it should return 200 on delete", async () => {
-      const response = await request(app).delete("/v1/launches/112").expect(200);
+      const response = await request(app)
+        .delete("/v1/launches/112")
+        .expect(200);
     });
 
     test("it should catch no launch found", async () => {
-      const response = await request(app).delete("/v1/launches/101").expect(400);
+      const response = await request(app)
+        .delete("/v1/launches/101")
+        .expect(400);
       expect(response.body).toStrictEqual({ error: "Launch not aboreted" });
     });
   });
